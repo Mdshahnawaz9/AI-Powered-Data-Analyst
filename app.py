@@ -42,6 +42,23 @@ llm = ChatGoogleGenerativeAI(
     google_api_key = os.getenv("GOOGLE_API_KEY")
 )
 
+def get_ai_response(response):
+    content = response.content
+
+    if isinstance(content,str):
+        return content
+    if isinstance(content,list):
+        text_parts = []
+
+        for item in content:
+            if isinstance(item,dict):
+                if item.get("type") == "text":
+                    text_parts.append(item.get("text",""))
+            elif isinstance(item,str):
+                text_parts.append(item)
+        return "\n".join(text_parts)
+    return str(content)
+
 st.title("AI-Powered Data Analyst")
 st.write(
     "Upload your CSV file, automatically clean the data, "
@@ -234,7 +251,7 @@ if uploaded_file is not None:
 
         st.success("Suggestion generated!")
 
-        st.write(response.content)
+        st.write(get_ai_response(response))
 
     st.divider()
 #--------------------------------------------------------------
@@ -283,7 +300,7 @@ if uploaded_file is not None:
             response = llm.invoke(chart_prompt)
 
         st.success("Chart recommendations generated!")
-        st.write(response.content)
+        st.write(get_ai_response(response))
 
     st.divider()
 #------------------------------------------------------------
@@ -454,7 +471,7 @@ if uploaded_file is not None:
 
             st.success("Analysis completed")
 
-            st.write(response.content)
+            st.write(get_ai_response(response))
         else:
             st.warning("Please enter a question first!")
 
@@ -498,4 +515,4 @@ if uploaded_file is not None:
 
         st.success("Insights generated!")
 
-        st.write(response.content)
+        st.write(get_ai_response(response))
