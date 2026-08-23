@@ -246,12 +246,22 @@ if uploaded_file is not None:
         -Do not make up information
         """
 
-        with st.spinner("Anlayzing data quality..."):
-            response = llm.invoke(cleaning_prompt)
+        try:
+            with st.spinner("Analyzing your data...."):
+                response = llm.invoke(cleaning_prompt)
 
-        st.success("Suggestion generated!")
+            st.success("Analysis completed")
+            st.write(get_ai_response(response))
 
-        st.write(get_ai_response(response))
+        except Exception as e:
+            if "429" in str(e) or "ResourceExhausted" in str(e):
+                st.warning(
+                    "⚠️ AI request limit reached. Please wait for a minute and try again."
+                )
+            else:
+                st.error(
+                    "❌ Something went wrong while analyzing the data. Please try again."
+                )
 
     st.divider()
 #--------------------------------------------------------------
@@ -296,11 +306,22 @@ if uploaded_file is not None:
             Columns: ...
             Reason: ...
         """
-        with st.spinner("Finding the best charts..."):
-            response = llm.invoke(chart_prompt)
+        try:
+            with st.spinner("Analyzing your data...."):
+                response = llm.invoke(chart_prompt)
 
-        st.success("Chart recommendations generated!")
-        st.write(get_ai_response(response))
+            st.success("Analysis completed")
+            st.write(get_ai_response(response))
+
+        except Exception as e:
+            if "429" in str(e) or "ResourceExhausted" in str(e):
+                st.warning(
+                "⚠️ AI request limit reached. Please wait for a minute and try again."
+                )
+            else:
+                st.error(
+                "❌ Something went wrong while analyzing the data. Please try again."
+            )
 
     st.divider()
 #------------------------------------------------------------
@@ -466,12 +487,22 @@ if uploaded_file is not None:
             - Keep the answer clear and concise.
             """
 
-            with st.spinner("Analyzing your data...."):
-                response = llm.invoke(prompt)
+            try:
+                with st.spinner("Analyzing your data...."):
+                    response = llm.invoke(prompt)
 
-            st.success("Analysis completed")
+                st.success("Analysis completed")
+                st.write(get_ai_response(response))
 
-            st.write(get_ai_response(response))
+            except Exception as e:
+                if "429" in str(e) or "ResourceExhausted" in str(e):
+                    st.warning(
+                        "⚠️ AI request limit reached. Please wait for a minute and try again."
+                    )
+                else:
+                    st.error(
+                        "❌ Something went wrong while analyzing the data. Please try again."
+                    )   
         else:
             st.warning("Please enter a question first!")
 
@@ -510,9 +541,19 @@ if uploaded_file is not None:
         - Format the response using numbered points.
         """
 
-        with st.spinner("Generating insights..."):
-            response = llm.invoke(insight_prompt)
+        try:
+            with st.spinner("Analyzing your data...."):
+                response = llm.invoke(prompt)
 
-        st.success("Insights generated!")
+            st.success("Analysis completed")
+            st.write(get_ai_response(response))
 
-        st.write(get_ai_response(response))
+        except Exception as e:
+                if "429" in str(e) or "ResourceExhausted" in str(e):
+                    st.warning(
+                        "⚠️ AI request limit reached. Please wait for a minute and try again."
+                    )
+                else:
+                    st.error(
+                        "❌ Something went wrong while analyzing the data. Please try again."
+                    )
